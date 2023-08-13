@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -14,44 +15,65 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<Products> listOfProducts = [];
 
-  List categorys = [];
+  // List categorys = [];
 
-  // Future<List<Products>> getProducts() async {
-  //   Dio dio = Dio();
-  //   final response = await dio.get('https://dummyjson.com/products');
-  //   final datas = DummyJson.fromJson(response.data);
-
-  //   listOfProducts = datas.products;
-  // }
-
-  getByCategory() async {
+  Future<List<Products>> getProducts() async {
     Dio dio = Dio();
+    final response = await dio.get('https://dummyjson.com/products');
+    // Map<String, dynamic> json = jsonDecode(response.data);
 
-    final dataByCategory =
-        await dio.get("https://dummyjson.com/products/categories");
-    categorys = dataByCategory.data;
+    // List<dynamic> datas = json["products"];
+    // List<Products> events =
+    //     datas.map((dynamic item) => Products.fromJson(item)).toList();
+    // return events;
+
+    final datas = DummyJson.fromJson(response.data);
+
+    listOfProducts = datas.products;
+    print(listOfProducts);
+    return listOfProducts;
   }
+
+  // getByCategory() async {
+  //   Dio dio = Dio();
+
+  //   final dataByCategory =
+  //       await dio.get("https://dummyjson.com/products/categories");
+
+  //   categorys.add(dataByCategory.data);
+  //   // categorys = dataByCategory.data;
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getProducts();
-    getByCategory();
+    getProducts();
+    // getByCategory();
   }
 
   @override
   Widget build(BuildContext context) {
+    // print(categorys);
     return Scaffold(
         appBar: AppBar(
           title: Text('Project Using Provider'),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: categorys.map((e) {
-              return Text(e);
-            }).toList(),
-          ),
+        body: FutureBuilder<List<Products>>(
+          future: getProducts(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: snapshot.data!.map((e) {
+                  return Column(
+                    children: [Text(e.title)],
+                  );
+                }).toList(),
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
         ));
   }
 }
