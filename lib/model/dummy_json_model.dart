@@ -4,20 +4,16 @@ class DummyJson {
   int skip;
   int limit;
 
-  DummyJson(
-      {required this.products,
-      required this.limit,
-      required this.skip,
-      required this.total});
+  DummyJson(this.products, this.limit, this.skip, this.total);
 
   factory DummyJson.fromJson(Map<String, dynamic> data) {
     return DummyJson(
-        products: (data['products'] as List<dynamic>)
+        (data['products'] as List<dynamic>)
             .map((e) => Products.fromJson(e))
             .toList(),
-        limit: data['limit'],
-        skip: data['skip '],
-        total: data['total']);
+        data['limit'],
+        data['skip'],
+        data['total']);
   }
 }
 
@@ -35,30 +31,30 @@ class Products {
   List<String> images;
 
   Products(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.price,
-      required this.discountPercentage,
-      required this.rating,
-      required this.stock,
-      required this.brand,
-      required this.category,
-      required this.thumbnail,
-      required this.images});
+      this.id,
+      this.title,
+      this.description,
+      this.price,
+      this.discountPercentage,
+      this.rating,
+      this.stock,
+      this.brand,
+      this.category,
+      this.thumbnail,
+      this.images);
 
   factory Products.fromJson(Map<String, dynamic> data) {
     return Products(
-        id: data['id'],
-        title: data['title'],
-        description: data['description'],
-        price: data['price'],
-        discountPercentage: data['discountPercentage'],
-        rating: data['rating'],
-        stock: data['stock'],
-        brand: data['brand'],
-        category: data['category'],
-        thumbnail: data['thumbnail'],
-        images: data['images']);
+        data['id'],
+        data['title'],
+        data['description'],
+        data['price'],
+        data['discountPercentage'],
+        data['rating'],
+        data['stock'],
+        data['brand'],
+        data['category'],
+        data['thumbnail'],
+        (data['images'] as List<dynamic>).map((e) => e.toString()).toList());
   }
 }

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:project_using_provider/model/dummy_json_model.dart';
@@ -15,7 +12,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<Products> listOfProducts = [];
 
-  // List categorys = [];
+  List categorys = [];
 
   Future<List<Products>> getProducts() async {
     Dio dio = Dio();
@@ -30,19 +27,18 @@ class _MainPageState extends State<MainPage> {
     final datas = DummyJson.fromJson(response.data);
 
     listOfProducts = datas.products;
-    print(listOfProducts);
+
     return listOfProducts;
   }
 
-  // getByCategory() async {
-  //   Dio dio = Dio();
+  getByCategory() async {
+    Dio dio = Dio();
 
-  //   final dataByCategory =
-  //       await dio.get("https://dummyjson.com/products/categories");
+    final dataByCategory =
+        await dio.get("https://dummyjson.com/products/categories");
 
-  //   categorys.add(dataByCategory.data);
-  //   // categorys = dataByCategory.data;
-  // }
+    categorys = dataByCategory.data;
+  }
 
   @override
   void initState() {
