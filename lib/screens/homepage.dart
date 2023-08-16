@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_using_provider/model/dummy_json_model.dart';
 
@@ -12,7 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<Products> listOfProducts = [];
 
-  List categorys = [];
+  List categories = [];
 
   Future<List<Products>> getProducts() async {
     Dio dio = Dio();
@@ -31,45 +32,55 @@ class _MainPageState extends State<MainPage> {
     return listOfProducts;
   }
 
-  getByCategory() async {
+  Future<void> getByCategory() async {
     Dio dio = Dio();
 
     final dataByCategory =
         await dio.get("https://dummyjson.com/products/categories");
 
-    categorys = dataByCategory.data;
+    setState(() {
+      categories = dataByCategory.data;
+    });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getProducts();
-    // getByCategory();
+    // getProducts();
+    getByCategory();
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(categorys);
+    print(categories);
     return Scaffold(
         appBar: AppBar(
           title: Text('Project Using Provider'),
         ),
-        body: FutureBuilder<List<Products>>(
-          future: getProducts(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: snapshot.data!.map((e) {
-                  return Column(
-                    children: [Text(e.title)],
-                  );
-                }).toList(),
-              );
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
+        body: Column(
+          children: categories.map((e) {
+            return Column(
+              children: [Text(e.toString())],
+            );
+          }).toList(),
         ));
   }
 }
+
+// FutureBuilder<List<Products>>(
+//           future: getProducts(),
+//           builder: (context, snapshot) {
+//             if (snapshot.hasData) {
+//               return Column(
+//                 children: snapshot.data!.map((e) {
+//                   return Column(
+//                     children: [Text(e.title)],
+//                   );
+//                 }).toList(),
+//               );
+//             } else {
+//               return CircularProgressIndicator();
+//             }
+//           },
+//         )

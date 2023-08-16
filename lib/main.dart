@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_using_provider/screens/homepage.dart';
+import 'package:project_using_provider/screens/loginPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +21,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "HomePage",
-      home: MainPage(),
+      home: LoginPage(),
     );
   }
 }
