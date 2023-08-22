@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "HomePage",
-      home: LoginPage(),
+      home: MainPage(),
     );
   }
 }

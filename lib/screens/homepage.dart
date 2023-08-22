@@ -11,26 +11,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Products> listOfProducts = [];
+  // List<Products> listOfProducts = [];
 
   List categories = [];
 
-  Future<List<Products>> getProducts() async {
-    Dio dio = Dio();
-    final response = await dio.get('https://dummyjson.com/products');
-    // Map<String, dynamic> json = jsonDecode(response.data);
+  // Future<List<Products>> getProducts() async {
+  //   Dio dio = Dio();
+  //   final response = await dio.get('https://dummyjson.com/products');
 
-    // List<dynamic> datas = json["products"];
-    // List<Products> events =
-    //     datas.map((dynamic item) => Products.fromJson(item)).toList();
-    // return events;
+  //   final datas = DummyJson.fromJson(response.data);
 
-    final datas = DummyJson.fromJson(response.data);
+  //   listOfProducts = datas.products;
 
-    listOfProducts = datas.products;
-
-    return listOfProducts;
-  }
+  //   return listOfProducts;
+  // }
 
   Future<void> getByCategory() async {
     Dio dio = Dio();
@@ -61,105 +55,108 @@ class _MainPageState extends State<MainPage> {
     getByCategory();
   }
 
+  DummyJson? dummyJson;
+  String? value;
+
   @override
   Widget build(BuildContext context) {
-    print(categories);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Project Using Provider'),
+          title: const Text('Project Using Provider'),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Column(
-                children: categories.map((e) {
-                  return Column(
-                    children: [
-                      Text(e.toString()),
-                      FutureBuilder(
-                        future: getByCategoryName(e.toString()),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: snapshot.data!.products.map((e) {
-                                  return Card(
-                                      margin: EdgeInsets.all(20),
-                                      elevation: 10,
-                                      shadowColor: Colors.black,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      color: Colors.grey,
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 20),
-                                          child: Column(children: [
-                                            Image.network(
-                                              e.images[0],
-                                              width: 150,
-                                              height: 150,
-                                            ),
-                                            Text(
-                                              e.title,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
-                                            ),
-                                            Text(
-                                              e.brand,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18),
-                                            ),
-                                            Text(
-                                              e.category,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
-                                            ),
-                                            Text(
-                                              '${e.price}\$',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
-                                            ),
-                                            ElevatedButton(
-                                                onPressed: () {},
-                                                child: Text('Add To Cart'))
-                                          ])));
-                                }).toList(),
-                              ),
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      )
-                    ],
-                  );
-                }).toList(),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: categories.map((e) {
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          value = e;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)),
+                        height: 30,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        margin: const EdgeInsets.all(20),
+                        child: Center(
+                          child: Text(
+                            e.toString(),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
+              FutureBuilder(
+                future: getByCategoryName(
+                    value == null ? "smartphones" : value.toString()),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: snapshot.data!.products.map((e) {
+                          return Card(
+                              margin: const EdgeInsets.all(20),
+                              elevation: 10,
+                              shadowColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              color: Colors.grey,
+                              child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 20),
+                                  child: Column(children: [
+                                    Image.network(
+                                      e.images[0],
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                    Text(
+                                      e.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      e.brand,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                    Text(
+                                      e.category,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                    Text(
+                                      '${e.price}\$',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {},
+                                        child: const Text('Add To Cart'))
+                                  ])));
+                        }).toList(),
+                      ),
+                    );
+                  } else {
+                    return const Text("loading...");
+                  }
+                },
+              )
             ],
           ),
         ));
   }
 }
-
-// FutureBuilder<List<Products>>(
-//           future: getProducts(),
-//           builder: (context, snapshot) {
-//             if (snapshot.hasData) {
-//               return Column(
-//                 children: snapshot.data!.map((e) {
-//                   return Column(
-//                     children: [Text(e.title)],
-//                   );
-//                 }).toList(),
-//               );
-//             } else {
-//               return CircularProgressIndicator();
-//             }
-//           },
-//         )
