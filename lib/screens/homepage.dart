@@ -50,6 +50,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   DummyJson? dummyJson;
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +90,16 @@ class _MainPageState extends State<MainPage> {
                           return InkWell(
                             onTap: () {
                               values.setValue(e);
+                              selectedIndex = categories
+                                  .indexWhere((element) => element == e);
                             },
                             child: Container(
                               decoration: BoxDecoration(
+                                  color: selectedIndex ==
+                                          categories.indexWhere(
+                                              (element) => element == e)
+                                      ? Colors.grey
+                                      : null,
                                   border: Border.all(color: Colors.black)),
                               height: 30,
                               padding:
