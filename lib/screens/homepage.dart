@@ -117,7 +117,9 @@ class _MainPageState extends State<MainPage> {
                                       Navigator.push(context, MaterialPageRoute(
                                         builder: (context) {
                                           return SingleProductPage(
-                                              id: e.id.toString());
+                                            id: e.id.toString(),
+                                            name: e.title,
+                                          );
                                         },
                                       ));
                                     },

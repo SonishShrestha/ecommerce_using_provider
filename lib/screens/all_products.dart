@@ -39,13 +39,16 @@ class _AllProductsState extends State<AllProducts> {
             if (snapshot.hasData) {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
+                child: Column(
                   children: snapshot.data!.map((e) {
                     return InkWell(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return SingleProductPage(id: e.id.toString());
+                            return SingleProductPage(
+                              id: e.id.toString(),
+                              name: e.title,
+                            );
                           },
                         ));
                       },
