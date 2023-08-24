@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:project_using_provider/Provider/add_to_cart.dart';
 import 'package:project_using_provider/screens/homepage.dart';
 import 'package:project_using_provider/screens/loginPage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,10 +22,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "HomePage",
-      home: MainPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AddToCart>(
+          create: (_) => AddToCart(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "HomePage",
+        home: MainPage(),
+      ),
     );
   }
 }
