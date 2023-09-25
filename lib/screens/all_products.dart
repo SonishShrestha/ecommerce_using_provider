@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:project_using_provider/Provider/add_to_cart.dart';
-import 'package:project_using_provider/model/add_to_cart.dart';
-import 'package:project_using_provider/model/single_product.dart';
+
 import 'package:project_using_provider/screens/single_product_page.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +30,7 @@ class _AllProductsState extends State<AllProducts> {
 
   @override
   Widget build(BuildContext context) {
+    print('object');
     return Column(
       children: [
         Text(
@@ -43,7 +43,7 @@ class _AllProductsState extends State<AllProducts> {
             if (snapshot.hasData) {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Consumer<AddToCart>(
+                child: Consumer<QuantityIncrementDecrement>(
                   builder: (context, value, child) {
                     return Column(
                       children: snapshot.data!.map((e) {
@@ -100,8 +100,17 @@ class _AllProductsState extends State<AllProducts> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
-                                      // final data = value.cartData.where((element) => element.singleProduct.id == )
-                                      value.cartData.add(e);
+                                      final data = value.cartData.where(
+                                          (element) =>
+                                              element.product.id == e.id);
+                                      if (data.isEmpty) {
+                                        value.cartData.add(
+                                            AddToCartWithQuantity(
+                                                quantity: 1, product: e));
+                                      } else {
+                                        data.first.quantity++;
+                                      }
+                                      // value.cartData.add(e);
                                     },
                                     child: const Text('Add To Cart'),
                                     style: ButtonStyle(

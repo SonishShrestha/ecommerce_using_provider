@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_using_provider/Provider/add_to_cart.dart';
+
 import 'package:project_using_provider/screens/homepage.dart';
-import 'package:project_using_provider/screens/loginPage.dart';
+
 import 'package:provider/provider.dart';
 
 void main() {
@@ -24,9 +25,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AddToCart>(
-          create: (_) => AddToCart(),
-        )
+        ChangeNotifierProvider<QuantityIncrementDecrement>(
+            create: (_) => QuantityIncrementDecrement())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:project_using_provider/model/dummy_json_model.dart';
-import 'package:project_using_provider/model/single_product.dart';
 
-class AddToCart extends ChangeNotifier {
-  List<Products> cartData = [];
+class AddToCartWithQuantity {
+  int quantity;
+  Products product;
+
+  AddToCartWithQuantity({required this.quantity, required this.product});
+}
+
+class QuantityIncrementDecrement extends ChangeNotifier {
+  List<AddToCartWithQuantity> cartData = [];
 
   String? _value;
   String? get value => _value;
@@ -12,11 +18,19 @@ class AddToCart extends ChangeNotifier {
     _value = e;
     notifyListeners();
   }
-}
 
-class AddToCartWithQuantity {
-  SingleProduct singleProduct;
-  int quantity;
+  void incrementQuantity(AddToCartWithQuantity incrementValue) {
+    incrementValue.quantity++;
+    notifyListeners();
+  }
 
-  AddToCartWithQuantity(this.singleProduct, this.quantity);
+  void decrementQuantity(AddToCartWithQuantity decrementValue) {
+    decrementValue.quantity--;
+    notifyListeners();
+  }
+
+  void delete(int data) {
+    cartData.removeWhere((element) => element.product.id == data);
+    notifyListeners();
+  }
 }

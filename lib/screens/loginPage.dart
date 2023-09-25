@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:project_using_provider/main.dart';
 import 'package:project_using_provider/model/login.dart';
 import 'package:project_using_provider/screens/homepage.dart';
 
