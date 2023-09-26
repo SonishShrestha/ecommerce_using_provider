@@ -40,6 +40,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey<ScaffoldState>();
+  TextEditingController quantityUpdate = TextEditingController();
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _MainPageState extends State<MainPage> {
               return Column(
                 children: value.cartData.map((e) {
                   return Container(
+                    margin: EdgeInsets.only(top: 15),
                     child: ListTile(
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage(e.product.images[0]),
@@ -95,7 +97,55 @@ class _MainPageState extends State<MainPage> {
                                   onPressed: () {
                                     quantityIncDec.incrementQuantity(e);
                                   },
-                                  icon: Icon(Icons.add))
+                                  icon: Icon(Icons.add)),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          actions: [
+                                            Column(
+                                              children: [
+                                                Container(
+                                                    // decoration: BoxDecoration(
+                                                    //     border: Border.all()),
+                                                    child: TextField(
+                                                  controller: quantityUpdate,
+                                                  decoration: InputDecoration(
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      hintText:
+                                                          "Enter Quantity"),
+                                                )),
+                                                ElevatedButton(
+                                                    onPressed: () {
+                                                      quantityIncDec
+                                                          .updateQuantity(e,
+                                                              quantityUpdate);
+                                                      Navigator.pop(context);
+                                                      quantityUpdate.clear();
+                                                    },
+                                                    child:
+                                                        Text('Update Quatity'))
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text('update')),
                             ],
                           );
                         },

@@ -33,4 +33,10 @@ class QuantityIncrementDecrement extends ChangeNotifier {
     cartData.removeWhere((element) => element.product.id == data);
     notifyListeners();
   }
+
+  void updateQuantity(AddToCartWithQuantity updateQuantity,
+      TextEditingController quantityUpdate) {
+    updateQuantity.quantity = int.parse(quantityUpdate.text);
+    notifyListeners();
+  }
 }
